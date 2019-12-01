@@ -12,7 +12,7 @@ resources:
 
 variables:
   projectName: 'Hataraku'
-  tag: '$(projectName)-docker-$(Rev:r)'
+  tag: '$(Build.BuildId)'
 
 name: '$(projectName)-docker-$(Rev:r)'
 
