@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Hataraku.Data": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
