@@ -32,7 +32,7 @@ stages:
         command: 'build'
         Dockerfile: 'src/Hataraku.Bot/Dockerfile'
         tags: '$(tag)'
-        buildContext: 'Hataraku'
+        buildContext: 'src/..'
     - task: Docker@2
       inputs:
         containerRegistry: 'DockerHub'
@@ -40,7 +40,7 @@ stages:
         command: 'build'
         Dockerfile: 'src/Hataraku.Data/Dockerfile'
         tags: '$(tag)'
-        buildContext: 'Hataraku'
+        buildContext: 'src/..'
     - task: Docker@2
       inputs:
         containerRegistry: 'DockerHub'
@@ -48,4 +48,4 @@ stages:
         command: 'build'
         Dockerfile: 'src/Hataraku.Dashboard/Dockerfile'
         tags: '$(tag)'
-        buildContext: 'Hataraku'
+        buildContext: 'src/..'
