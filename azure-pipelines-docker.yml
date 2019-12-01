@@ -26,26 +26,39 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
+      displayName: 'Login to DockerHub'
+      inputs:
+        command: login
+        containerRegistry: 'DockerHub'
+    - task: Docker@2
+      displayName: 'Build Hataraku.Bot container image'
       inputs:
         containerRegistry: 'DockerHub'
         repository: 'Hataraku.Bot'
-        command: 'build'
+        command: buildAndPush
         Dockerfile: 'src/Hataraku.Bot/Dockerfile'
         tags: '$(tag)'
         buildContext: 'src/..'
     - task: Docker@2
+      displayName: 'Build Hataraku.Data container image'
       inputs:
         containerRegistry: 'DockerHub'
         repository: 'Hataraku.Data'
-        command: 'build'
+        command: buildAndPush
         Dockerfile: 'src/Hataraku.Data/Dockerfile'
         tags: '$(tag)'
         buildContext: 'src/..'
     - task: Docker@2
+      displayName: 'Build Hataraku.Dashboard container image'
       inputs:
         containerRegistry: 'DockerHub'
         repository: 'Hataraku.Dashboard'
-        command: 'build'
+        command: buildAndPush
         Dockerfile: 'src/Hataraku.Dashboard/Dockerfile'
         tags: '$(tag)'
         buildContext: 'src/..'
+    - task: Docker@2
+      displayName: 'Logout from DockerHub'
+      inputs:
+        command: logout
+        containerRegistry: 'DockerHub'
