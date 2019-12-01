@@ -11,8 +11,8 @@ resources:
 - repo: self
 
 variables:
-  tag: '$(Build.BuildId)'
   projectName: 'Hataraku'
+  tag: '$(projectName)-docker-$(Rev:r)'
 
 name: '$(projectName)-docker-$(Rev:r)'
 
