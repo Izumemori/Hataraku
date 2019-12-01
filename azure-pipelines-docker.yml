@@ -1,0 +1,48 @@
+# Docker
+# Build a Docker image 
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  tags:
+    include:
+      - '*'
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  projectName: 'Hataraku'
+
+name: '$(projectName)-docker-$(Rev:r)'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'DockerHub'
+        repository: 'Hataraku.Bot'
+        command: 'build'
+        Dockerfile: 'src/Hataraku.Bot/Dockerfile'
+        tags: '$(tag)'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'DockerHub'
+        repository: 'Hataraku.Data'
+        command: 'build'
+        Dockerfile: 'src/Hataraku.Data/Dockerfile'
+        tags: '$(tag)'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'DockerHub'
+        repository: 'Hataraku.Dashboard'
+        command: 'build'
+        Dockerfile: 'src/Hataraku.Dashboard/Dockerfile'
+        tags: '$(tag)'
