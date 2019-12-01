@@ -34,7 +34,7 @@ stages:
       displayName: 'Build Hataraku.Bot container image'
       inputs:
         containerRegistry: 'DockerHub'
-        repository: 'Hataraku.Bot'
+        repository: 'izumemori/hataraku.bot'
         command: buildAndPush
         Dockerfile: 'src/Hataraku.Bot/Dockerfile'
         tags: '$(tag)'
@@ -43,7 +43,7 @@ stages:
       displayName: 'Build Hataraku.Data container image'
       inputs:
         containerRegistry: 'DockerHub'
-        repository: 'Hataraku.Data'
+        repository: 'izumemori/hataraku.data'
         command: buildAndPush
         Dockerfile: 'src/Hataraku.Data/Dockerfile'
         tags: '$(tag)'
@@ -52,7 +52,7 @@ stages:
       displayName: 'Build Hataraku.Dashboard container image'
       inputs:
         containerRegistry: 'DockerHub'
-        repository: 'Hataraku.Dashboard'
+        repository: 'izumemori/hataraku.dashboard'
         command: buildAndPush
         Dockerfile: 'src/Hataraku.Dashboard/Dockerfile'
         tags: '$(tag)'
