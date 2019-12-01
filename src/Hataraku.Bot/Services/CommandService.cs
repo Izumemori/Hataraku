@@ -38,8 +38,12 @@ namespace Hataraku.Bot.Services
             
             if (this._config.EnableExecutionReaction)
             {
-                this._success = new LocalEmoji(this._config.SuccessEmoji);
-                this._failure = new LocalEmoji(this._config.FailureEmoji);
+                try
+                {
+                    this._success = new LocalEmoji(this._config.SuccessEmoji);
+                    this._failure = new LocalEmoji(this._config.FailureEmoji);
+                }
+                catch { }
             }
 
             this.prefixes = Enumerable.Empty<string>();
@@ -113,7 +117,7 @@ namespace Hataraku.Bot.Services
         private Task HandleNonHatarakuResult(CommandResult result, HatarakuCommandContext context)
         {
             if (result.IsSuccessful)
-                return context.Message.AddReactionAsync(this.success);
+                return ReactAsync(true, context);
             else if (result is HatarakuFailedResult failed && !string.IsNullOrEmpty(failed.Reason))
                 return HandleCommandFailed(context, failed.Reason);
 
@@ -128,7 +132,7 @@ namespace Hataraku.Bot.Services
                 _ => (null, null)
             };
 
-            await context.Message.AddReactionAsync(this.failure);
+            await ReactAsync(true, context);
 
             if (message is null && embed is null) return;
 
@@ -137,8 +141,15 @@ namespace Hataraku.Bot.Services
 
         private async Task HandleCommandFailed(HatarakuCommandContext context, string? reason = null, Exception? exception = null)
         {
-            await context.Message.AddReactionAsync(this.success);
+            await ReactAsync(false, context);
             await context.Channel.SendMessageAsync(reason);
+        }
+
+        public Task ReactAsync(bool success, HatarakuCommandContext context)
+        {
+            var emoji = success ? this._success : this._failure;
+
+            return emoji is null ? Task.CompletedTask : context.Message.AddReactionAsync(emoji);
         }
     }
 }
