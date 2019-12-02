@@ -1,9 +1,7 @@
-﻿using Hataraku.Bot.Entities;
+﻿using Hataraku.Bot.Entities.Commands;
 using Hataraku.Bot.Entities.Results;
 using Qmmands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Modules

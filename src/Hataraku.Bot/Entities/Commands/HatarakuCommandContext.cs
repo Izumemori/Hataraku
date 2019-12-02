@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hataraku.Bot.Entities
+namespace Hataraku.Bot.Entities.Commands
 {
     public class HatarakuCommandContext : CommandContext
     {
