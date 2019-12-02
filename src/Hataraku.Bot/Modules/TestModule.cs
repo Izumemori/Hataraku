@@ -1,7 +1,7 @@
-﻿using Hataraku.Bot.Entities.Commands;
+﻿#if DEBUG
+using Hataraku.Bot.Entities.Commands;
 using Hataraku.Bot.Entities.Results;
 using Qmmands;
-using System;
 using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Modules
@@ -25,3 +25,4 @@ namespace Hataraku.Bot.Modules
             => Task.FromResult<CommandResult>(new HatarakuReplyResult("Pong!"));
     }
 }
+#endif
