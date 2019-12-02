@@ -5,10 +5,10 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY . .
 COPY ["nuget.config", "src/Hataraku.Bot/"]
 COPY ["src/Hataraku.Bot/Hataraku.Bot.csproj", "src/Hataraku.Bot/"]
 RUN dotnet restore "src/Hataraku.Bot/Hataraku.Bot.csproj"
+COPY . .
 WORKDIR "/src/src/Hataraku.Bot"
 RUN dotnet build "Hataraku.Bot.csproj" -c Release -o /app/build
 

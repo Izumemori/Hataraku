@@ -5,6 +5,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
+COPY ["nuget.config", "src/Hataraku.Bot/"]
 COPY ["src/Hataraku.Data/Hataraku.Data.csproj", "src/Hataraku.Data/"]
 RUN dotnet restore "src/Hataraku.Data/Hataraku.Data.csproj"
 COPY . .

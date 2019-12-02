@@ -7,6 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
+COPY ["nuget.config", "src/Hataraku.Bot/"]
 COPY ["src/Hataraku.Dashboard/Hataraku.Dashboard.csproj", "src/Hataraku.Dashboard/"]
 RUN dotnet restore "src/Hataraku.Dashboard/Hataraku.Dashboard.csproj"
 COPY . .
