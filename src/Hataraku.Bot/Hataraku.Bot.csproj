@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Disqord" Version="1.0.0-beta-2" />
-    <PackageReference Include="Disqord.Serialization.Json.Newtonsoft" Version="1.0.0-beta-2" />
+    <PackageReference Include="Disqord" Version="1.0.0-beta-4" />
+    <PackageReference Include="Disqord.Serialization.Json.Newtonsoft" Version="1.0.0-beta-4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0-preview3.19553.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.0-preview3.19553.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0-preview3.19553.2" />

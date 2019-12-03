@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Modules
 {
+    [Name("Tests")]
+    [Description("Various owner only tests")]
     public class TestModule : HatarakuModuleBase
     {
         [Command("test")]

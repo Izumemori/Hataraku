@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Modules
 {
-    public class InfoModule : HatarakuModuleBase
+    [Name("Information")]
+    [Description("Informative commands about the bot")]
+    public partial class InfoModule : HatarakuModuleBase
     {
         [Command("ping")]
+        [Description("Returns the Gateway Latency and Round-trip-time")]
         public Task<CommandResult> PingAsync()
         {
             var stopwatch = Stopwatch.StartNew();

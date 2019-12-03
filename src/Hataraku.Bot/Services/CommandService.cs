@@ -2,6 +2,7 @@
 using Disqord.Events;
 using Hataraku.Bot.Entities;
 using Hataraku.Bot.Entities.Commands;
+using Hataraku.Bot.Entities.Commands.Parsers;
 using Hataraku.Bot.Entities.Results;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -55,6 +56,8 @@ namespace Hataraku.Bot.Services
             this._client.Ready += OnReady;
 
             this._commandService.AddModules(Assembly.GetEntryAssembly());
+            this._commandService.AddTypeParser(new ModuleParser());
+            this._commandService.AddTypeParser(new CommandParser());
 
             this._commandService.CommandExecuted += (e) => { _ = OnCommandExecuted(e); return Task.CompletedTask; };
             this._commandService.CommandExecutionFailed += (e) => { _ = OnCommandFailed(e); return Task.CompletedTask; };
