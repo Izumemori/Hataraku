@@ -2,6 +2,7 @@
 using Hataraku.Bot.Entities.Commands;
 using Hataraku.Bot.Entities.Results;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Qmmands;
 using System;
 using System.Threading.Tasks;

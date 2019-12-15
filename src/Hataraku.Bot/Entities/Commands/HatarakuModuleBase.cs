@@ -4,8 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Qmmands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Entities.Commands
@@ -46,22 +44,22 @@ namespace Hataraku.Bot.Entities.Commands
         protected HatarakuCommandResult Ok(string message, LocalEmbed embed)
             => InternalOk(message, embed);
 
-        protected HatarakuCommandResult Ok(string message, Func<IUserMessage, Task> continueWith)
+        protected HatarakuCommandResult Ok(string message, Func<IUserMessage, HatarakuCommandContext, Task> continueWith)
             => InternalOk(message, null, continueWith);
 
-        protected HatarakuCommandResult Ok(LocalEmbed embed, Func<IUserMessage, Task> continueWith)
+        protected HatarakuCommandResult Ok(LocalEmbed embed, Func<IUserMessage, HatarakuCommandContext, Task> continueWith)
             => InternalOk(null, embed, continueWith);
 
-        protected HatarakuCommandResult Ok(string message, LocalEmbed embed, Func<IUserMessage, Task> continueWith)
+        protected HatarakuCommandResult Ok(string message, LocalEmbed embed, Func<IUserMessage, HatarakuCommandContext, Task> continueWith)
             => InternalOk(message, embed, continueWith);
 
-        protected HatarakuCommandResult Ok<TState>(string message, TState state, Func<IUserMessage, TState, Task> continueWith)
+        protected HatarakuCommandResult Ok<TState>(string message, TState state, Func<IUserMessage, HatarakuCommandContext, TState, Task> continueWith)
             => InternalOk(message, null, state, continueWith);
 
-        protected HatarakuCommandResult Ok<TState>(LocalEmbed embed, TState state, Func<IUserMessage, TState, Task> continueWith)
+        protected HatarakuCommandResult Ok<TState>(LocalEmbed embed, TState state, Func<IUserMessage, HatarakuCommandContext, TState, Task> continueWith)
             => InternalOk(null, embed, state, continueWith);
 
-        protected HatarakuCommandResult Ok<TState>(string message, LocalEmbed embed, TState state, Func<IUserMessage, TState, Task> continueWith)
+        protected HatarakuCommandResult Ok<TState>(string message, LocalEmbed embed, TState state, Func<IUserMessage, HatarakuCommandContext, TState, Task> continueWith)
             => InternalOk(message, embed, state, continueWith);
 
         protected HatarakuCommandResult Fail(string? reason = null)
@@ -70,10 +68,10 @@ namespace Hataraku.Bot.Entities.Commands
         private HatarakuCommandResult InternalOk(string? message, LocalEmbed? embed)
             => new HatarakuReplyResult(message, embed);
 
-        private HatarakuCommandResult InternalOk(string? message, LocalEmbed? embed, Func<IUserMessage, Task> continueWith)
-            => new HatarakuContinuedExecutionResult(message, embed, continueWith);
+        private HatarakuCommandResult InternalOk(string? message, LocalEmbed? embed, Func<IUserMessage, HatarakuCommandContext, Task> continueWith)
+            => new HatarakuContinuedExecutionResult(message, embed, continueWith, this.Context);
 
-        private HatarakuCommandResult InternalOk<TState>(string? message, LocalEmbed? embed, TState state, Func<IUserMessage, TState, Task> continueWith)
-            => new HatarakuContinuedExecutionResult<TState>(message, embed, state, continueWith);
+        private HatarakuCommandResult InternalOk<TState>(string? message, LocalEmbed? embed, TState state, Func<IUserMessage, HatarakuCommandContext, TState, Task> continueWith)
+            => new HatarakuContinuedExecutionResult<TState>(message, embed, state, continueWith, this.Context);
     }
 }

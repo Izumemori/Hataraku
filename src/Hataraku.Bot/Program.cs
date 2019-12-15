@@ -33,6 +33,7 @@ namespace Hataraku.Bot
                     });
                     serviceCollection.AddSingleton<Qmmands.CommandService>(commandServiceBuilder => new Qmmands.CommandService(commandServiceBuilder.GetRequiredService<IOptions<Qmmands.CommandServiceConfiguration>>().Value));
                     serviceCollection.AddSingleton<DiscordClient>(clientBuilder => new DiscordClient(TokenType.Bot, clientBuilder.GetRequiredService<IOptions<BotConfig>>().Value.Token));
+                    serviceCollection.AddSingleton<InteractionService>();
                     serviceCollection.AddHostedService<BotService>();
                     serviceCollection.AddHostedService<EventService>();
                     serviceCollection.AddHostedService<CommandService>();
