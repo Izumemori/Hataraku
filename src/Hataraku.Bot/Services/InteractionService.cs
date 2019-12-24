@@ -2,8 +2,8 @@
 using Disqord.Events;
 using Hataraku.Bot.Entities.Commands.Interactivity;
 using Microsoft.Extensions.Logging;
-using Qommon.Events;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Services
@@ -21,29 +21,19 @@ namespace Hataraku.Bot.Services
             this._logger = logger;
         }
 
-        public async Task<T?> WaitForAsync<T>(IInteractiveMessage<T> interactiveMessage, int? timeoutMs = null)
-            where T: DiscordEventArgs
+        public async Task<IUserMessage?> WaitForAsync(IInteractiveMessage interactiveMessage, int? timeoutMs = null)
         {
             var timeout = timeoutMs ?? DefaultTimeout;
 
-            Func<Task> delay = async () =>
-            {
-                while (timeout > 0)
-                {
-                    await Task.Delay(100);
-                    timeout -= 100;
-                }
-            };
+            var cancelToken = new CancellationTokenSource();
 
             async Task EventHandler(DiscordEventArgs e)
             {
-                if (!(e is T eventArgs)) return;
+                if (!interactiveMessage.Precondition(e)) return;
 
-                if (!interactiveMessage.Precondition(eventArgs)) return;
+                if (!await interactiveMessage.HandleEventArgsAsync(e)) return;
 
-                var timeout = timeoutMs ?? DefaultTimeout;
-
-                await interactiveMessage.HandleEventArgsAsync(eventArgs);
+                cancelToken.CancelAfter(timeout);
             }
 
             await interactiveMessage.SetupAsync();
@@ -52,8 +42,10 @@ namespace Hataraku.Bot.Services
             this._client.MessageReceived += EventHandler;
 
             var task = interactiveMessage.TaskCompletionSource.Task;
+            var delay = Task.Delay(-1, cancelToken.Token);
+            cancelToken.CancelAfter(timeout);
 
-            var taskOrDelay = await Task.WhenAny(task, delay());
+            var taskOrDelay = await Task.WhenAny(task, delay);
 
             this._client.ReactionAdded -= EventHandler;
             this._client.MessageReceived -= EventHandler;

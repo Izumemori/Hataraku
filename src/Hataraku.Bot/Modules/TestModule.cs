@@ -19,57 +19,21 @@ namespace Hataraku.Bot.Modules
         [Command("test")]
         public Task<CommandResult> TestAsync()
         {
-            return Ok("React to this", async (message, context) =>
+            var pages = new[]
             {
-                var interactiveService = context.ServiceProvider.GetRequiredService<InteractionService>();
+                new LocalEmbedBuilder().WithDescription("a"),
+                new LocalEmbedBuilder().WithDescription("b"),
+                new LocalEmbedBuilder().WithDescription("c"),
+                new LocalEmbedBuilder().WithDescription("d"),
+                new LocalEmbedBuilder().WithDescription("e"),
+            };
 
-                Predicate<DiscordEventArgs> predicate = (x =>
+            return Ok<PaginatedMessageBuilder<DiscordEventArgs>>("React to this", x => x.WithPages(pages), (msg, ctx) => 
+                msg.ModifyAsync(x =>
                 {
-                    return x switch
-                    {
-                        ReactionAddedEventArgs reactionAdded => reactionAdded.User.Id == context.User.Id && reactionAdded.Message.Id == message.Id,
-                        MessageReceivedEventArgs messageReceived => messageReceived.Message.Author.Id == context.User.Id,
-                        _ => false
-                    };
-                });
-
-                var emoji = new[]
-                {
-                    new LocalEmoji("◀"),
-                    new LocalEmoji("▶"),
-                    new LocalEmoji("⏹")
-                };
-
-                var actions = new Action<DiscordEventArgs, PaginatedMessageProperties>[]
-                {
-                    (args, props) =>
-                    {
-                        if (!(args is ReactionAddedEventArgs reactionAdded)) return;
-                        if (reactionAdded.Emoji.Name == emoji[0].Name) props.Direction = PaginatorDirection.Backwards;
-                        if (reactionAdded.Emoji.Name == emoji[1].Name) props.Direction = PaginatorDirection.Forwards;
-                        if (reactionAdded.Emoji.Name == emoji[2].Name) props.ShouldExit = true;
-                    },
-                    (args, props) =>
-                    {
-                        if (!(args is MessageReceivedEventArgs messageReceived)) return;
-                        if (!int.TryParse(messageReceived.Message.Content, out var res)) return;
-                        props.Page = res;
-                    }
-                };
-
-                var pages = new LocalEmbedBuilder[]
-                {
-                    new LocalEmbedBuilder().WithDescription("1"),
-                    new LocalEmbedBuilder().WithDescription("2"),
-                    new LocalEmbedBuilder().WithDescription("3")
-                };
-
-                Action<PaginatedMessageState, LocalEmbedFooterBuilder> footer = (x, footer) => footer.WithText($"Page {x.CurrentPage}/{x.TotalPages}");
-
-                var interactiveMessage = new PaginatedMessage<DiscordEventArgs>(message, predicate, actions, emoji, pages, footer);
-
-                var res = await interactiveService.WaitForAsync(interactiveMessage);
-            });
+                    x.Content = "Bye";
+                    x.Embed = null;
+                }));
         }
 
         [Command("test2")]

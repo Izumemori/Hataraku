@@ -1,20 +1,16 @@
 ﻿using Disqord;
 using Disqord.Events;
-using Qommon.Events;
 using System;
 using System.Threading.Tasks;
 
 namespace Hataraku.Bot.Entities.Commands.Interactivity
 {
-    public interface IInteractiveMessage<T> : IAsyncDisposable
-        where T: DiscordEventArgs
+    public interface IInteractiveMessage: IAsyncDisposable
     {
-        Predicate<T> Precondition { get; }
-
-        TaskCompletionSource<T> TaskCompletionSource { get; }
-
         ValueTask SetupAsync();
-
-        ValueTask HandleEventArgsAsync(T args);
+        Predicate<DiscordEventArgs> Precondition { get; }
+        TaskCompletionSource<IUserMessage> TaskCompletionSource { get; }
+        ValueTask<bool> HandleEventArgsAsync(DiscordEventArgs args);
+        
     }
 }

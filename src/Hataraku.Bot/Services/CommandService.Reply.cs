@@ -1,5 +1,6 @@
 ﻿using Disqord;
 using Hataraku.Bot.Entities.Commands;
+using Hataraku.Bot.Entities.Commands.Interactivity;
 using Hataraku.Bot.Entities.Results;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -23,18 +24,30 @@ namespace Hataraku.Bot.Services
 
         private async Task HandleSuccessfulCommand(HatarakuSuccessResult result, HatarakuCommandContext context)
         {
-            (string? message, LocalEmbed? embed, Func<IUserMessage, Task>? continueWith) = result switch
+            (string? message, LocalEmbed? embed, InteractiveMessageBuilder? interactiveMessage, Func<IUserMessage, Task>? continueWith) = result switch
             {
-                HatarakuContinuedExecutionResult execution => (execution.Message, execution.Embed, execution.ContinueWith),
-                HatarakuReplyResult reply => (reply.Message, reply.Embed, null),
-                _ => (null, null, null)
+                HatarakuContinuedExecutionResult execution => (execution.Message, execution.Embed, execution.InteractiveMessageBuilder, execution.ContinueWith),
+                HatarakuReplyResult reply => (reply.Message, reply.Embed, reply.InteractiveMessageBuilder, null),
+                _ => (null, null, null, null)
             };
 
             await ReactAsync(true, context);
 
-            if (message is null && embed is null) return;
+            IUserMessage? res = default;
 
-            var res = await context.Channel.SendMessageAsync(message, embed: embed);
+            if (message is null && embed is null && interactiveMessage is null) return;
+
+            if (!string.IsNullOrEmpty(message) || embed != null)
+                res = await context.Channel.SendMessageAsync(message, embed: embed);
+
+            if (interactiveMessage != null)
+            {
+                if (res == null) res = await context.Channel.SendMessageAsync(embed: new LocalEmbedBuilder().Build());
+
+                await this._interactionService.WaitForAsync(interactiveMessage.WithMessage(res).Build());
+            }
+
+            if (res == null) return;
 
             if (continueWith != null) await continueWith(res);
         }
