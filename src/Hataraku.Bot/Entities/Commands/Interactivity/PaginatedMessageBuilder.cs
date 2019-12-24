@@ -6,6 +6,12 @@ using System.Text;
 
 namespace Hataraku.Bot.Entities.Commands.Interactivity
 {
+    public class PaginatedMessageBuilder : PaginatedMessageBuilder<DiscordEventArgs>
+    {
+        public PaginatedMessageBuilder(HatarakuCommandContext context) : base(context)
+        {}
+    }
+
     public partial class PaginatedMessageBuilder<T> : InteractiveMessageBuilder<T>
         where T: DiscordEventArgs
     {

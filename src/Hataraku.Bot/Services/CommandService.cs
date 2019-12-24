@@ -22,7 +22,6 @@ namespace Hataraku.Bot.Services
         private readonly ILogger<CommandService> _logger;
         private readonly Qmmands.CommandService _commandService;
         private readonly InteractionService _interactionService;
-
         private readonly BotConfig _config;
         private readonly DiscordClient _client;
         private readonly IServiceProvider _serviceProvider;

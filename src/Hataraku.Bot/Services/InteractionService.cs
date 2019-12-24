@@ -2,7 +2,6 @@
 using Disqord.Events;
 using Hataraku.Bot.Entities.Commands.Interactivity;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ namespace Hataraku.Bot.Services
     public class InteractionService
     {
         private const int DefaultTimeout = 30_000;
-
         private readonly ILogger<InteractionService> _logger;
         private readonly DiscordClient _client;
 

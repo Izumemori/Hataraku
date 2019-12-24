@@ -28,7 +28,7 @@ namespace Hataraku.Bot.Modules
                 new LocalEmbedBuilder().WithDescription("e"),
             };
 
-            return Ok<PaginatedMessageBuilder<DiscordEventArgs>>("React to this", x => x.WithPages(pages), (msg, ctx) => 
+            return Ok<PaginatedMessageBuilder>("React to this", x => x.WithPages(pages), (msg, ctx) => 
                 msg.ModifyAsync(x =>
                 {
                     x.Content = "Bye";

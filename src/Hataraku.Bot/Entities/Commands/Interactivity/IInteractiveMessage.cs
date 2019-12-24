@@ -11,6 +11,5 @@ namespace Hataraku.Bot.Entities.Commands.Interactivity
         Predicate<DiscordEventArgs> Precondition { get; }
         TaskCompletionSource<IUserMessage> TaskCompletionSource { get; }
         ValueTask<bool> HandleEventArgsAsync(DiscordEventArgs args);
-        
     }
 }
